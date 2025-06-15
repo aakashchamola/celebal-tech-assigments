@@ -1,7 +1,6 @@
 const http = require('http');
 const handleRoutes = require('./src/fileRoutes');
-
-const PORT = 3000;
+const PORT = 8000;
 
 const server = http.createServer((req, res) => {
     handleRoutes(req, res);
