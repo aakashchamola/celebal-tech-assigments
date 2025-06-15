@@ -1,14 +1,12 @@
 const http = require('http');
+const handleRoutes = require('./src/fileRoutes');
 
-// Creating the server
+const PORT = 3000;
+
 const server = http.createServer((req, res) => {
-    res.statusCode = 200;
-    res.setHeader('Content-Type', 'text/plain');
-    res.end('Hello World\n');
+    handleRoutes(req, res);
 });
 
-// Defining the port and starting the server
-const PORT = 8000;
 server.listen(PORT, () => {
     console.log(`Server running at http://localhost:${PORT}/`);
 });
