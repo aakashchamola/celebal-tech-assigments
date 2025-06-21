@@ -3,53 +3,67 @@
 This repository contains my weekly Celebal summer internship assignments. 
 Each week's assignment is stored in a separate branch.
 
+## Week-3 Assignment
 
-## Week-2 Assignment
-The Week-2 assignment focuses on creating a RESTful API using Node.js. The API includes endpoints for basic CRUD operations on files stored in the `files` directory.
+The Week-3 assignment focuses on advancing asynchronous programming in Node.js. This week, the main goal is to refactor the Week-2 RESTful API to use **Promises** and **Async/Await** for better readability, error handling, and modern best practices. Additionally, an extra feature has been added to demonstrate **Promise chaining**, **Event Loop behavior**, and robust asynchronous handling.
 
 ### What I Did:
-- Used the built-in `http` module to create a server.
-- Implemented routing logic manually to handle different endpoints:
-  - `POST /create`: Create a new file.
-  - `GET /read`: Read the contents of a file.
-  - `DELETE /delete`: Delete a file.
-- Created a `fileController` module to handle file operations such as creating, reading, and deleting files.
-- Used the `fs` module for file system operations.
-- Tested the API using tools like Postman or curl.
+- Replaced all callback-based `fs` operations with `fs.promises` methods.
+- Refactored `create`, `read`, and `delete` operations to use `async` functions with `await` and `try/catch` for clean error handling.
+- Added a new endpoint `POST /copyAndRename`:
+  - Demonstrates **Promise chaining** using `.then().then().catch()` instead of `async/await`.
+  - Shows how multiple file operations (copy, delete) can be chained in Promises.
+  - Includes `console.log` statements to illustrate how Node.js **Event Loop** executes synchronous and asynchronous code in order.
+- Added a separate script (`callbacks-vs-promises.js`) to compare **Callbacks vs Promises vs Async/Await** side-by-side for educational clarity.
+- Tested the API using curl and Postman.
 
 ### How It Works:
-1. **Setup**: The server is created using the `http` module and listens on port `8000`.
-2. **Routing**: The `fileRoutes` module defines the logic for handling different endpoints based on the request method and URL.
-3. **File Operations**: The `fileController` module performs file operations such as creating, reading, and deleting files in the `files` directory.
-4. **Response Handling**: The `responseUtils` module is used to send JSON responses with appropriate status codes.
-5. **Testing**: The API can be tested by sending HTTP requests to the server using tools like Postman.
+1. **Setup:** The server uses the built-in `http` module and listens on port `8000`.
+2. **Routing:** The `fileRoutes` module handles four endpoints:
+   - `POST /create` — Create a new file.
+   - `GET /read` — Read a file’s contents.
+   - `DELETE /delete` — Delete a file.
+   - `POST /copyAndRename` — Copy a file to a new name and delete the original using Promise chaining.
+3. **File Operations:** All operations use `fs.promises` instead of callbacks.
+4. **Event Loop Demo:** Logs show the order of synchronous vs asynchronous execution.
+5. **Testing:** Use curl or Postman to test all endpoints.
 
 ### Key Objectives:
-- Learn how to create a RESTful API without using external frameworks.
-- Understand how to manually implement routing logic.
-- Perform file system operations using the `fs` module.
-- Test the API locally using HTTP request tools.
+- Understand the difference between **Callbacks**, **Promises**, and **Async/Await**.
+- Implement robust error handling with `try/catch` and `.catch()`.
+- Demonstrate **Promise chaining** and multiple asynchronous operations.
+- Visualize the **Event Loop** in action through strategic logging.
 
 ### Run and Use the Program
 
-To interact with the API, you can use the following `curl` commands:
+To interact with the API, use the following `curl` commands:
 
 #### Create a File
-To create a new file, use the `POST /create` endpoint:
+To create a file with a filename and some content , use the `POST /create` endpoint:
 ```bash
-curl -X POST http://localhost:8000/create -H "Content-Type: application/json" -d '{"filename": "example.txt", "content": "This is a sample file content for the celebal node.js internship"}'
+curl -X POST http://localhost:8000/create \
+  -H "Content-Type: application/json" \
+  -d '{"filename": "example.txt", "content": "This is a sample file content for Celebal Node.js internship - Week 3"}'
+```
+
+#### Rename a FileName
+To rename the name of a File-Name, use the `POST /copyAndRename` endpoint:
+```bash
+curl -X POST http://localhost:8000/copyAndRename \
+  -H "Content-Type: application/json" \
+  -d '{"source": "source.txt", "destination": "destination.txt"}'
 ```
 
 #### Read a File
 To read the contents of a file, use the `GET /read` endpoint:
 ```bash
-curl -X GET http://localhost:8000/read -H "Content-Type: application/json" -d '{"filename": "example.txt"}'
+curl -X GET http://localhost:8000/read -H "Content-Type: application/json" -d '{"filename": "source.txt"}'
 ```
 
 #### Delete a File
 To delete a file, use the `DELETE /delete` endpoint:
 ```bash
-curl -X DELETE http://localhost:8000/delete -H "Content-Type: application/json" -d '{"filename": "example.txt"}'
+curl -X DELETE http://localhost:8000/delete -H "Content-Type: application/json" -d '{"filename": "source.txt"}'
 ```
 
 Replace `example.txt` with the name of the file you want to create, read, or delete.
