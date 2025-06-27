@@ -3,68 +3,68 @@
 This repository contains my weekly Celebal summer internship assignments. 
 Each week's assignment is stored in a separate branch.
 
-## Week-3 Assignment
+## Week-4 Assignment
 
-The Week-3 assignment focuses on advancing asynchronous programming in Node.js. This week, the main goal is to refactor the Week-2 RESTful API to use **Promises** and **Async/Await** for better readability, error handling, and modern best practices. Additionally, an extra feature has been added to demonstrate **Promise chaining**, **Event Loop behavior**, and robust asynchronous handling.
+The Week-4 assignment focuses on building a modular, feature-rich web server using **Express.js**. This week’s goal was to move from the low-level `http` module to Express, covering middleware, routing, static files, and template engines.
 
 ### What I Did:
-- Replaced all callback-based `fs` operations with `fs.promises` methods.
-- Refactored `create`, `read`, and `delete` operations to use `async` functions with `await` and `try/catch` for clean error handling.
-- Added a new endpoint `POST /copyAndRename`:
-  - Demonstrates **Promise chaining** using `.then().then().catch()` instead of `async/await`.
-  - Shows how multiple file operations (copy, delete) can be chained in Promises.
-  - Includes `console.log` statements to illustrate how Node.js **Event Loop** executes synchronous and asynchronous code in order.
-- Added a separate script (`callbacks-vs-promises.js`) to compare **Callbacks vs Promises vs Async/Await** side-by-side for educational clarity.
-- Tested the API using curl and Postman.
+- Set up a modular Express.js project.
+- Implemented routing using `express.Router()` in a separate `routes` folder.
+- Added global and route-level middleware.
+- Rendered dynamic HTML pages using the **EJS** template engine.
+- Served **static files** like CSS from the `public` folder.
+- Demonstrated **query parameters** and **URL parameters** in routes.
+- Followed best practices with a clean folder structure.
 
 ### How It Works:
-1. **Setup:** The server uses the built-in `http` module and listens on port `8000`.
-2. **Routing:** The `fileRoutes` module handles four endpoints:
-   - `POST /create` — Create a new file.
-   - `GET /read` — Read a file’s contents.
-   - `DELETE /delete` — Delete a file.
-   - `POST /copyAndRename` — Copy a file to a new name and delete the original using Promise chaining.
-3. **File Operations:** All operations use `fs.promises` instead of callbacks.
-4. **Event Loop Demo:** Logs show the order of synchronous vs asynchronous execution.
-5. **Testing:** Use curl or Postman to test all endpoints.
+1. **Entry Point:** The server starts from `server.js` using Express.
+2. **Routing:** Defined in `routes/mainRoutes.js`:
+   - `/` → Home (EJS-rendered)
+   - `/about` → About (EJS-rendered)
+   - `/greet?name=John` → Query param demo
+   - `/user/:id` → URL param demo
+3. **Middleware:**
+   - `middleware/logger.js` logs every request with timestamp.
+4. **Views:**
+   - EJS templates are located in the `views/` folder.
+5. **Static Files:**
+   - CSS and assets are served from `public/`.
 
 ### Key Objectives:
-- Understand the difference between **Callbacks**, **Promises**, and **Async/Await**.
-- Implement robust error handling with `try/catch` and `.catch()`.
-- Demonstrate **Promise chaining** and multiple asynchronous operations.
-- Visualize the **Event Loop** in action through strategic logging.
+- Understand what Express.js is and why it simplifies server logic.
+- Learn how to define clean, maintainable routes using `express.Router`.
+- Implement custom and global middleware.
+- Handle request data through **query strings** and **dynamic URL segments**.
+- Use **EJS** to render dynamic HTML.
+- Serve static assets like CSS using `express.static`.
 
-### Run and Use the Program
+---
 
-To interact with the API, use the following `curl` commands:
+### 🧪 Folder Structure
 
-#### Create a File
-To create a file with a filename and some content , use the `POST /create` endpoint:
+week-4/
+   └── src/
+      ├── middlewares/
+      │   └── logger.js
+      ├── public/
+      │   └── index.css
+      ├── routes/
+      │   └── mainRoutes.js
+      └── views/
+         ├── about.ejs
+         └── index.ejs
+   ├── .gitIgnore
+   ├── README.md
+   ├── server.js
+
+---
+
+### 🧪 Test the Server
+
+#### 1. Start the Server
 ```bash
-curl -X POST http://localhost:8000/create \
-  -H "Content-Type: application/json" \
-  -d '{"filename": "example.txt", "content": "This is a sample file content for Celebal Node.js internship - Week 3"}'
-```
+node server.js
 
-#### Rename a FileName
-To rename the name of a File-Name, use the `POST /copyAndRename` endpoint:
-```bash
-curl -X POST http://localhost:8000/copyAndRename \
-  -H "Content-Type: application/json" \
-  -d '{"source": "source.txt", "destination": "destination.txt"}'
-```
-
-#### Read a File
-To read the contents of a file, use the `GET /read` endpoint:
-```bash
-curl -X GET http://localhost:8000/read -H "Content-Type: application/json" -d '{"filename": "source.txt"}'
-```
-
-#### Delete a File
-To delete a file, use the `DELETE /delete` endpoint:
-```bash
-curl -X DELETE http://localhost:8000/delete -H "Content-Type: application/json" -d '{"filename": "source.txt"}'
-```
 
 Replace `example.txt` with the name of the file you want to create, read, or delete.
 
