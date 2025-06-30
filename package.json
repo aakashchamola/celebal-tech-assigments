@@ -1,13 +1,14 @@
 {
   "dependencies": {
+    "dotenv": "^17.0.0",
     "ejs": "^3.1.10",
-    "express": "^5.1.0"
+    "express": "^5.1.0",
+    "mongoose": "^8.16.1"
   },
   "name": "celebal-tech-assigments",
   "version": "1.0.0",
   "description": "This repository contains my weekly Celebal summer internship assignments.  Each week's assignment is stored in a separate branch.",
   "main": "server.js",
-  "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js"

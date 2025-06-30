@@ -1,32 +1,40 @@
+// server.js
+
+require('dotenv').config();
 const express = require('express');
+const mongoose = require('mongoose');
 const path = require('path');
+
 const app = express();
-const PORT = 8000;
-const mainRoutes = require('./src/routes/mainRoutes');
+const PORT = process.env.PORT || 8000;
+
+// Import Routes & Middleware
+const userRoutes = require('./routes/userRoutes');
+const errorHandler = require('./middlewares/errorHandler');
+
 // Middleware
-const logger = require('./src/middlewares/logger');
-const errorHandler = require('./src/middlewares/errorhandler');
-
-app.use(logger);
-
-// Serve static files
-app.use(express.static(path.join(__dirname, 'src/public')));
-
-// Set EJS as templating engine
-app.set('view engine', 'ejs');
-app.set('views', path.join(__dirname, 'src/views'));
-
-// Routes
+app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-app.use('/', mainRoutes);
+// Routes
+app.use('/api/users', userRoutes);
 
-app.use(errorHandler);
-
-app.use((req, res) => {
-  res.status(404).render('404', { title: '404 - Page Not Found', url: req.originalUrl });
+// 404 Fallback
+app.use((req, res, next) => {
+  res.status(404).json({ message: 'Route not found' });
 });
 
-app.listen(PORT, () => {
-  console.log(`Server running at http://localhost:${PORT}`);
+// Global Error Handler
+app.use(errorHandler);
+
+// MongoDB Connection and Server Start
+mongoose.connect(process.env.MONGO_URI)
+.then(() => {
+  console.log('✅ MongoDB connected');
+  app.listen(PORT, () => {
+    console.log(`🚀 Server running at http://localhost:${PORT}`);
+  });
+})
+.catch((err) => {
+  console.error('❌ MongoDB connection error:', err.message);
 });
